@@ -29,15 +29,20 @@ project.ext {
 	spockVersion    = '1.0-groovy-2.4'
 	codenarcVersion = '0.24.1'
 	slf4jVersion    = '1.7.21'
-	log4jVersion    = '2.6.2'
 }
 
 project.with {
 	//project.name is set in the settings.gradle with rootProject.name
 	group                 "it.italiaonline.rnd"
 	version               "0.1.0-SNAPSHOT" // (remove -SNAPSHOT for releases)
-	description           "A 'gigawatt' powered project."
+	description           "Provide and object the functionality to print itself on a media (currently csv)"
 	wrapper.gradleVersion "$gradleVersion"
+}
+
+// target java 7
+allprojects {
+	sourceCompatibility = 7
+	targetCompatibility = 7
 }
 
 repositories {
@@ -47,10 +52,8 @@ repositories {
 	try {
 		if ( new URL(nexusUrl).text.contains('Sonatype Nexus') ) {
 			logger.warn("Adding maven repositories, nexus <$nexusUrl>")
-			maven {
-				url "${nexusUrl}/content/repositories/snapshots"
-				url "${nexusUrl}/content/repositories/releases"
-			}
+			maven { url "${nexusUrl}/content/repositories/snapshots" }
+			maven { url "${nexusUrl}/content/repositories/releases"  }
 		} else {
 			logger.warn("maven repos skipped cause <$nexusUrl> is not reachable!")
 		}
@@ -66,9 +69,6 @@ dependencies {
 
 	// Slf4j dependencies with log4j2 backend
 	compile "org.slf4j:slf4j-api:$slf4jVersion"
-	compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
-	compile "org.apache.logging.log4j:log4j-api:$log4jVersion"
-	compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
 
 	// We use the awesome Spock testing and specification framework
 	testCompile "org.spockframework:spock-core:$spockVersion"
