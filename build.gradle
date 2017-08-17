@@ -33,9 +33,9 @@ project.ext {
 
 project.with {
 	//project.name is set in the settings.gradle with rootProject.name
-	group                 "it.italiaonline.rnd"
-	version               "0.2.0" // (remove -SNAPSHOT for releases)
-	description           "Provide and object the functionality to print itself on a media (currently csv)"
+	group                 'it.italiaonline.rnd'
+	version               '0.2.0' // (remove -SNAPSHOT for releases)
+	description           'Provide and object the functionality to print itself on a media (currently csv)'
 	wrapper.gradleVersion "$gradleVersion"
 }
 
