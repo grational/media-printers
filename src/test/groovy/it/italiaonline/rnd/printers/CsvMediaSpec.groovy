@@ -26,6 +26,26 @@ class CsvMediaSpec extends Specification {
 			csvRow    == 'v1,v2,v3'
 	}
 
+	def "Should return the correct values using with and a custom delimiter"() {
+		setup: 'build an empty CsvMedia'
+			Media csvPrinter = new CsvMedia(delimiter)
+		when:
+			csvPrinter
+				.with('first',  'v1')
+				.with('second', 'v2')
+				.with('third',  'v3')
+			String csvHeader = csvPrinter.header()
+			String csvRow    = csvPrinter.row()
+		then:
+			csvHeader == header
+			csvRow    == row
+		where:
+			delimiter || header                         | row
+			'\t'      || 'first	second	third'          | 'v1	v2	v3'
+			';'       || 'first;second;third'           | 'v1;v2;v3'
+			'_test_'  || 'first_test_second_test_third' | 'v1_test_v2_test_v3'
+	}
+
 	def "Should return the correct values using a map passed through constructor"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
 			Media csvPrinter = new CsvMedia(

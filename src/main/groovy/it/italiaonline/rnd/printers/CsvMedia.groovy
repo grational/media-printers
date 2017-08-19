@@ -33,6 +33,18 @@ class CsvMedia implements Media {
 	}
 
 	/**
+	 * Secondary constructor: change field separator with empty accumulator
+	 *
+	 * @param fieldsSeparator a String used to separate fields
+	 */
+	CsvMedia(String fs) {
+		this(
+			[:],
+			fs
+		)
+	}
+
+	/**
 	 * Primary constructor
 	 *
 	 * @param acc a LinkedHashMap used to store the couples (key, value)
@@ -40,10 +52,10 @@ class CsvMedia implements Media {
 	 */
 	CsvMedia(
 		Map acc,
-		String fieldsSeparator
+		String fs
 		) {
 		this.accumulator = acc
-		this.fieldsSeparator = fieldsSeparator
+		this.fieldsSeparator = fs
 	}
 
 	/**
@@ -91,7 +103,7 @@ class CsvMedia implements Media {
 	private String csvify(Collection c) {
 		c.collect {
 			def field = it.replaceAll('"','""')
-			(field =~ /[\s"${fieldsSeparator}]/) ?  /"${field}"/ : field
+			(field =~ /[\s"]|${fieldsSeparator}/) ?  /"${field}"/ : field
 		}.join(fieldsSeparator)
 	}
 }
