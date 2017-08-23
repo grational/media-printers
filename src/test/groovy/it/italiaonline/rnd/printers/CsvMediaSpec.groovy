@@ -26,9 +26,9 @@ class CsvMediaSpec extends Specification {
 			csvRow    == 'v1,v2,v3'
 	}
 
-	def "Should return the correct values using with and a custom delimiter"() {
+	def "Should return the correct values using with and a custom separator"() {
 		setup: 'build an empty CsvMedia'
-			Media csvPrinter = new CsvMedia(delimiter)
+			Media csvPrinter = new CsvMedia(separator: separator)
 		when:
 			csvPrinter
 				.with('first',  'v1')
@@ -40,7 +40,7 @@ class CsvMediaSpec extends Specification {
 			csvHeader == header
 			csvRow    == row
 		where:
-			delimiter || header                         | row
+			separator || header                         | row
 			'\t'      || 'first	second	third'          | 'v1	v2	v3'
 			';'       || 'first;second;third'           | 'v1;v2;v3'
 			'_test_'  || 'first_test_second_test_third' | 'v1_test_v2_test_v3'
@@ -49,9 +49,11 @@ class CsvMediaSpec extends Specification {
 	def "Should return the correct values using a map passed through constructor"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
 			Media csvPrinter = new CsvMedia(
-				first:  'v1',
-				second: 'v2',
-				third:  'v3'
+				fields: [
+					first:  'v1',
+					second: 'v2',
+					third:  'v3'
+				]
 			)
 		when:
 			String csvHeader = csvPrinter.header()
@@ -82,12 +84,12 @@ class CsvMediaSpec extends Specification {
 	def "Should work also changing separator"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
 			Media csvPrinter = new CsvMedia(
-				[
+				fields: [
 					first:  'v1',
 					second: 'v2',
 					third:  'v3'
 				],
-				"\t"
+				separator: "\t"
 			)
 		when:
 			String csvHeader = csvPrinter.header()
@@ -100,28 +102,30 @@ class CsvMediaSpec extends Specification {
 	def "Should satisfy this real test case"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
 			Media csvPrinter = new CsvMedia(
-				ID: 'ristorantececcarelli',
-				NAME: 'Ristorante Ceccarelli',
-				SIGN: 'Ristorante Ceccarelli',
-				DESCRIPTION: "Situato a Torino nel quartiere Borgo Po zona Gran Madre, il Ristorante Ceccarelli propone una cucina nazionale di qualità caratterizzata da piatti tipici della tradizione culinaria piemontese e toscana. Oltre ad un'ampia scelta di antipasti, il ristorante propone tante specialità a base di carne e di pesce, ottima carne chianina, specialità stagionali come i funghi, serviti in diversi modi. Particolarmente degni di nota il fritto misto, piatto tipico piemontese, i calamaretti, la zuppa con farro e scampi, il fritto di cervella e fiori di zucchina e i golosi dolci della casa. Ampia la scelta dei vini, con etichette nazionali e locali. Il Ristorante Ceccarelli è in via S. Santarosa 7/b. Per prenotazioni contattare lo 011 8193736 o il 348 9018484.",
-				CATEGORY: 'Restaurant',
-				ADDRESS: 'Via Santorre Di Santarosa, 7',
-				LATITUDE: '45.06302',
-				LONGITUDE: '7.70061',
-				LOGO: 'https://img.pgol.it/img/R3/76/70/07/0/R37670070_LG.gif',
-				ZIP: '10131',
-				CITY: 'Torino',
-				PROVINCE: 'TO',
-				REGION: 'Piemonte',
-				COUNTRY: 'it',
-				PHONES: 'mobile:+393489018484||fisso:+390118193736||fax:+390118193736',
-				IMAGES: 'https://img.pgol.it/img/R3/76/70/07/0/13296736.jpg',
-				EMAILS: 'ristorantececcarelli@gmail.com',
-				SITE: 'http://www.ristorantececcarelli.it',
-				OPENINGS: '1:12:30:14:30,1:19:30:22:30,2:closed,3:19:30:22:30,4:12:30:14:30,4:19:30:22:30,5:12:30:14:30,5:19:30:22:30,6:12:30:14:30,6:19:30:22:30,7:12:30:14:30,7:19:30:22:30',
-				SERVICES: 'ampia scelta di vini||pranzi aziendali||servizio di catering',
-				SPECIALTIES: 'antipasti||carne chianina||cucina nazionale||cucina piemontese||cucina toscana||dolci della casa||fritto misto||pesce||specialità carne||specialità funghi||specialità stagionali',
-				PAYMENT_OPTIONS: 'bancomat||carte di credito||solo contanti'
+				fields: [
+					ID: 'ristorantececcarelli',
+					NAME: 'Ristorante Ceccarelli',
+					SIGN: 'Ristorante Ceccarelli',
+					DESCRIPTION: "Situato a Torino nel quartiere Borgo Po zona Gran Madre, il Ristorante Ceccarelli propone una cucina nazionale di qualità caratterizzata da piatti tipici della tradizione culinaria piemontese e toscana. Oltre ad un'ampia scelta di antipasti, il ristorante propone tante specialità a base di carne e di pesce, ottima carne chianina, specialità stagionali come i funghi, serviti in diversi modi. Particolarmente degni di nota il fritto misto, piatto tipico piemontese, i calamaretti, la zuppa con farro e scampi, il fritto di cervella e fiori di zucchina e i golosi dolci della casa. Ampia la scelta dei vini, con etichette nazionali e locali. Il Ristorante Ceccarelli è in via S. Santarosa 7/b. Per prenotazioni contattare lo 011 8193736 o il 348 9018484.",
+					CATEGORY: 'Restaurant',
+					ADDRESS: 'Via Santorre Di Santarosa, 7',
+					LATITUDE: '45.06302',
+					LONGITUDE: '7.70061',
+					LOGO: 'https://img.pgol.it/img/R3/76/70/07/0/R37670070_LG.gif',
+					ZIP: '10131',
+					CITY: 'Torino',
+					PROVINCE: 'TO',
+					REGION: 'Piemonte',
+					COUNTRY: 'it',
+					PHONES: 'mobile:+393489018484||fisso:+390118193736||fax:+390118193736',
+					IMAGES: 'https://img.pgol.it/img/R3/76/70/07/0/13296736.jpg',
+					EMAILS: 'ristorantececcarelli@gmail.com',
+					SITE: 'http://www.ristorantececcarelli.it',
+					OPENINGS: '1:12:30:14:30,1:19:30:22:30,2:closed,3:19:30:22:30,4:12:30:14:30,4:19:30:22:30,5:12:30:14:30,5:19:30:22:30,6:12:30:14:30,6:19:30:22:30,7:12:30:14:30,7:19:30:22:30',
+					SERVICES: 'ampia scelta di vini||pranzi aziendali||servizio di catering',
+					SPECIALTIES: 'antipasti||carne chianina||cucina nazionale||cucina piemontese||cucina toscana||dolci della casa||fritto misto||pesce||specialità carne||specialità funghi||specialità stagionali',
+					PAYMENT_OPTIONS: 'bancomat||carte di credito||solo contanti'
+				]
 			)
 		when:
 			String csvHeader = csvPrinter.header()

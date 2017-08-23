@@ -1,65 +1,31 @@
 package it.italiaonline.rnd.printers
 
+import it.italiaonline.rnd.transform.Transformation
+import it.italiaonline.rnd.transform.Identity
+
 /**
  * This class is used to build a CSV representation of an object
  */
 class CsvMedia implements Media {
 
-	private final Map accumulator
-	private final String fieldsSeparator
-	private final String defaultSeparator = ','
+	private final Map            fields
+	private final String         separator
+	private final Transformation transformation
 
 	/**
-	 * Tertiary constructor: nothing passed. Use comma by default and
-	 * accept just new parameters with 'with' method
-	 */
-	CsvMedia() {
-		this(
-			[:],
-			',' // default separator
-		)
-	}
-
-	/**
-	 * Secondary constructor: use comma as separator by default
-	 *
+	 * Groovy-like constructor, just a map with parameters is passed.
+	 * <p>
 	 * @param acc a LinkedHashMap used to store the couples (key, value)
+	 * @param separator a String used to separate fields
 	 */
-	CsvMedia(Map acc) {
-		this(
-			acc,
-			',' // default separator
-		)
+	CsvMedia(Map params) {
+		this.fields         = params?.fields         ?: [:]
+		this.separator      = params?.separator      ?: ','
+		this.transformation = params?.transformation ?: new Identity()
 	}
 
 	/**
-	 * Secondary constructor: change field separator with empty accumulator
-	 *
-	 * @param fieldsSeparator a String used to separate fields
-	 */
-	CsvMedia(String fs) {
-		this(
-			[:],
-			fs
-		)
-	}
-
-	/**
-	 * Primary constructor
-	 *
-	 * @param acc a LinkedHashMap used to store the couples (key, value)
-	 * @param fieldsSeparator a String used to separate fields
-	 */
-	CsvMedia(
-		Map acc,
-		String fs
-		) {
-		this.accumulator = acc
-		this.fieldsSeparator = fs
-	}
-
-	/**
-	 * This method load a couple (key, value) into the class accumulator.
+	 * This method load a couple (key, value) into the class fields.
 	 * Actually generate a new CsvMedia class incremented with the additional values
 	 *
 	 * @param name  a LinkedHashMap used to store the couples (key, value)
@@ -68,26 +34,26 @@ class CsvMedia implements Media {
 	 */
 	@Override
 	Media with(String name, String value) {
-		this.accumulator.put(name, value)
+		this.fields.put(name, value)
 		new CsvMedia(
-			this.accumulator,
-			this.fieldsSeparator
+			fields:    this.fields,
+			separator: this.separator
 		)
 	}
 
 	/**
 	 * Returns a CSV representation of all the keys
 	 *
-	 * @return String  a csv row composed by the keys in the accumulator
+	 * @return String  a csv row composed by the keys in the fields
 	 */
 	String header() {
-		csvify(this.accumulator.keySet())
+		csvify(this.fields.keySet())
 	}
 
 	/**
 	 * Returns a CSV representation of all the values
 	 *
-	 * @return String  a csv row composed by the values in the accumulator
+	 * @return String  a csv row composed by the values in the fields
 	 * Rules:
 	 * - MS-DOS-style lines that end with (CR/LF) characters (optional for the last line).
 	 * - An optional header record (there is no sure way to detect whether it is present, so care is required when importing).
@@ -97,13 +63,14 @@ class CsvMedia implements Media {
 	 * - A (double) quote character in a field must be represented by two (double) quote characters.
 	 */
 	String row() {
-		csvify(this.accumulator.values())
+		csvify(this.fields.values())
 	}
 
 	private String csvify(Collection c) {
-		c.collect {
-			def field = it.replaceAll('"','""')
-			(field =~ /[\s"]|${fieldsSeparator}/) ?  /"${field}"/ : field
-		}.join(fieldsSeparator)
+		c.collect { f ->
+			def field = this.transformation.transform(f)
+			field = field.replaceAll('"','""')
+			(field =~ /[\s"]|${separator}/) ?  /"${field}"/ : field
+		}.join(this.separator)
 	}
 }
