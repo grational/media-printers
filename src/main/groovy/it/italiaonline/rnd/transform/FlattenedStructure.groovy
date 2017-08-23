@@ -10,14 +10,17 @@ class FlattenedStructure implements Transformation {
 		String kvs = '::' // Map  key/value separator
 		String hs  = '--' // Hours separator
 
+		def notEmptyList = { it instanceof List && it }
+		def notEmptyMap  = { it instanceof Map  && it }
+
 		Object.metaClass.stringify { sep=l1s ->
 			def result
 			switch(delegate) {
 
-				case List:
+				case notEmptyList:
 					def list
 					switch(delegate.first()) {
-						case Map:
+						case notEmptyMap:
 							list = delegate.collect { Map m ->
 					         	 	 m.stringify(l2s)
 					       	 	 }
@@ -28,10 +31,10 @@ class FlattenedStructure implements Transformation {
 					result = list.join(l1s)
 					break
 
-				case Map:
+				case notEmptyMap:
 					def map
 					switch(delegate.values().first()) {
-						case List:
+						case notEmptyList:
 							map = delegate.collectEntries { k, v ->
 								[(k): v.join(l2s)]
 							}
@@ -53,10 +56,10 @@ class FlattenedStructure implements Transformation {
 		Object.metaClass.nestingLevels {
 			def nestingLevels = 1
 			switch(delegate) {
-				case List:
+				case notEmptyList:
 					nestingLevels += delegate.first().nestingLevels()
 					break
-				case Map:
+				case notEmptyMap:
 					nestingLevels += delegate.values().first().nestingLevels()
 					break
 				default:
