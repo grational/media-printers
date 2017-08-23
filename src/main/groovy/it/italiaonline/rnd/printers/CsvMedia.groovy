@@ -1,5 +1,6 @@
 package it.italiaonline.rnd.printers
 
+// internal deps
 import it.italiaonline.rnd.transform.Transformation
 import it.italiaonline.rnd.transform.Identity
 
@@ -33,11 +34,12 @@ class CsvMedia implements Media {
 	 * @return Media  return an object CsvMedia that contains all the couples
 	 */
 	@Override
-	Media with(String name, String value) {
+	Media with(String name, def value) {
 		this.fields.put(name, value)
 		new CsvMedia(
-			fields:    this.fields,
-			separator: this.separator
+			fields:         this.fields,
+			separator:      this.separator,
+			transformation: this.transformation
 		)
 	}
 
@@ -70,7 +72,7 @@ class CsvMedia implements Media {
 		c.collect { f ->
 			def field = this.transformation.transform(f)
 			field = field.replaceAll('"','""')
-			(field =~ /[\s"]|${separator}/) ?  /"${field}"/ : field
+			(field =~ /[\s"]|\Q${separator}\E/) ?  /"${field}"/ : field
 		}.join(this.separator)
 	}
 }

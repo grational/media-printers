@@ -9,10 +9,10 @@ interface Media {
   /**
    * This method load a couple (key, value) into the class accumulator
    * <p>
-   * @param name  a LinkedHashMap used to store the couples (key, value)
-   * @param value  a LinkedHashMap used to store the couples (key, value)
+   * @param name  a String label (key)
+   * @param value an object with the content of the field (value)
    * @return Media  return an object Media that contains all the couples
    */
-  Media with(String name, String value)
+  Media with(String name, def value)
 
 }
