@@ -10,38 +10,44 @@ class FlattenedStructure implements Transformation {
 		String kvs = '::' // Map  key/value separator
 		String hs  = '--' // Hours separator
 
-		Object.metaClass.stringify {
-			delegate
-		}
+		Object.metaClass.stringify { sep=l1s ->
+			def result
+			switch(delegate) {
 
-		List.metaClass.stringify {
-			def list
-			switch(delegate.first()) {
-				case Map:
-					list = delegate.collect { Map m ->
-					         m.stringify(l2s)
-					       }
-					break
-				default:
-					list = delegate
-			}
-			list.join(l1s)
-		}
-
-		Map.metaClass.stringify { sep=l1s ->
-			def map
-			switch(delegate.values().first()) {
 				case List:
-					map = delegate.collectEntries { k, v ->
-						[(k): v.join(l2s)]
+					def list
+					switch(delegate.first()) {
+						case Map:
+							list = delegate.collect { Map m ->
+					         	 	 m.stringify(l2s)
+					       	 	 }
+							break
+						default:
+							list = delegate
 					}
+					result = list.join(l1s)
 					break
+
+				case Map:
+					def map
+					switch(delegate.values().first()) {
+						case List:
+							map = delegate.collectEntries { k, v ->
+								[(k): v.join(l2s)]
+							}
+							break
+						default:
+							map = delegate
+					}
+					result = map.collect { k, v ->
+					          return "${k}${kvs}${v}"
+					         }.join(sep)
+					break
+
 				default:
-					map = delegate
+					result = delegate
 			}
-			map.collect { k, v ->
-				return "${k}${kvs}${v}"
-			}.join(sep)
+			return result
 		}
 
 		Object.metaClass.nestingLevels {
