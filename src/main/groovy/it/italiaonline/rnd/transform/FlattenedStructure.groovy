@@ -10,7 +10,7 @@ class FlattenedStructure implements Transformation {
 		String kvs = '::' // Map  key/value separator
 		String hs  = '--' // Hours separator
 
-		String.metaClass.stringify {
+		Object.metaClass.stringify {
 			delegate
 		}
 
