@@ -48,7 +48,8 @@ class FlattenedStructure implements Transformation {
 					break
 
 				default:
-					result = delegate
+					// return an empty string when the delegate is null or empty
+					result = delegate ?: ''
 			}
 			return result
 		}

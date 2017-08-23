@@ -58,4 +58,15 @@ class FlattenedStructureSpec extends Specification {
 			def exception = thrown(IllegalArgumentException)
 			exception.message == "The data structure passed is too complex (nested levels: 3)"
 	}
+	
+	def "Should return an empty String when an empty List or Map is passed"() {
+		when:
+			def output = new FlattenedStructure().transform(ds)
+		then:
+			output == expected
+		where:
+			ds  || expected
+			[]  || ''
+			[:] || ''
+	}
 }
