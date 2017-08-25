@@ -2,7 +2,7 @@ package it.italiaonline.rnd.transform
 
 import spock.lang.*
 
-class FlattenedStructureSpec extends Specification {
+class FlattenedStructureUSpec extends Specification {
 
 	def "Should make no trasformation if a String is passed"() {
 		given: 'A String data structure'

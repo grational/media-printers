@@ -7,7 +7,7 @@ import it.italiaonline.rnd.transform.*
 /**
  * This class test the correct output of the CsvMedia class
  */
-class CsvMediaSpec extends Specification {
+class CsvMediaUSpec extends Specification {
 
 	/**
 	 * Load 3 couples key,value then compare with the expected result for header
