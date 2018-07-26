@@ -10,6 +10,6 @@ interface Jsonable {
    * <p>
    * @return String  return a String containing the json representation of the object
    */
-  String toJson()
+  def toJson()
 
 }
