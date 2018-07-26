@@ -1,6 +1,6 @@
 package it.italiaonline.rnd.printers
 
-import groovy.json.JsonBuilder
+import groovy.json.JsonGenerator
 
 /**
  * This class is used to build a CSV representation of an object
@@ -82,6 +82,9 @@ class JsonMedia implements Media {
 	}
 
 	String json() {
-		new JsonBuilder(this.content).toString()
+		def jsonOutput = new JsonGenerator.Options()
+                         .addConverter(Jsonable) { it.toJson() }
+                         .build()
+		jsonOutput.toJson(this.content)
 	}
 }

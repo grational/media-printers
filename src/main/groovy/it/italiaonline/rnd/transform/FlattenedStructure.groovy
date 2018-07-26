@@ -22,8 +22,8 @@ class FlattenedStructure implements Transformation {
 					switch(delegate.first()) {
 						case notEmptyMap:
 							list = delegate.collect { Map m ->
-					         	 	 m.stringify(l2s)
-					       	 	 }
+							         m.stringify(l2s)
+							       }
 							break
 						default:
 							list = delegate
