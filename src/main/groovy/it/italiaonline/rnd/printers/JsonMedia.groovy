@@ -65,6 +65,14 @@ class JsonMedia implements Media {
 		listWith(data)
 	}
 
+	Media merge(JsonMedia another) {
+		if ( (this.content in Map) && (another.content in List) )
+			throw new UnsupportedOperationException(
+				'Cannot insert a json array into a json object'
+			)
+		new JsonMedia(this.content + another.content)
+	}
+
 	private Media listWith(def data) {
 		if (this.content in Map)
 			throw new UnsupportedOperationException (
