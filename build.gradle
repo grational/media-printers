@@ -26,8 +26,8 @@ plugins {
 project.ext {
 	groovyVersion   = '2.5.1'
 	gradleVersion   = '4.9'
-	//spockVersion    = '1.1-groovy-2.4'
-	spockVersion    = '1.2-groovy-2.5-SNAPSHOT'
+	spockVersion    = '1.1-groovy-2.4'
+	//spockVersion    = '1.2-groovy-2.5-SNAPSHOT'
 	codenarcVersion = '1.2'
 	slf4jVersion    = '1.7.25'
 	wrapper.gradleVersion "$gradleVersion"
