@@ -7,7 +7,7 @@ import groovy.json.JsonBuilder
  */
 class JsonMedia implements Media {
 
-	private final def structure
+	private final def content
 
 	/**
 	 * Groovy-like constructor, just a map with parameters is passed.
@@ -18,15 +18,15 @@ class JsonMedia implements Media {
 		this([:])
 	}
 	JsonMedia(Map map) {
-		this.structure = map ?: [:]
+		this.content = map ?: [:]
 	}
 
 	JsonMedia(List list) {
-		this.structure = list ?: []
+		this.content = list ?: []
 	}
 
 	/**
-	 * This method load a couple (key, value) into the structure.
+	 * This method load a couple (key, value) into the content.
 	 * Actually generate a new JsonMedia class incremented with the additional values
 	 *
 	 * @param name  a String used to label the value
@@ -36,8 +36,8 @@ class JsonMedia implements Media {
 	@Override
 	Media with(String name, def value) {
 		def media
-		if (this.structure in Map)
-			media = new JsonMedia(this.structure + [(name): value])
+		if (this.content in Map)
+			media = new JsonMedia(this.content + [(name): value])
 		else
 			throw new UnsupportedOperationException (
 				'Cannot load an Entry into a json array'
@@ -66,17 +66,14 @@ class JsonMedia implements Media {
 	}
 
 	private Media listWith(def data) {
-		def media
-		if (this.structure in List)
-			media = new JsonMedia(this.structure << data)
-		else
+		if (this.content in Map)
 			throw new UnsupportedOperationException (
 				"Cannot load '${data.getClass().getSimpleName()}' into a json object"
 			)
-		return media
+		new JsonMedia(this.content.clone() << data)
 	}
 
 	String json() {
-		new JsonBuilder(this.structure).toString()
+		new JsonBuilder(this.content).toString()
 	}
 }
