@@ -83,6 +83,7 @@ class JsonMedia implements Media {
 
 	String json() {
 		def jsonOutput = new JsonGenerator.Options()
+		                      .disableUnicodeEscaping() // Do not escape UNICODE
                          .addConverter(Jsonable) { it.toJson() }
                          .build()
 		jsonOutput.toJson(this.content)
