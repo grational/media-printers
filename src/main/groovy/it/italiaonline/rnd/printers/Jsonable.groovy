@@ -1,15 +1,25 @@
 package it.italiaonline.rnd.printers
 
 /**
- * This interface describe objects cabable of representing themselves as a Json element
+ * This abstract class describes objects cabable of impressing themselves on a JsonMedia
  */
-interface Jsonable {
+abstract class Jsonable {
 
   /**
-   * This method is used to return the json representation of the object
+   * This method is used to print the object on a JsonMedia
    * <p>
-   * @return String  return a String containing the json representation of the object
+   * @param jsonMedia a JsonMedia object
+   * @return JsonMedia return a JsonMedia object that contains all the relevant fields
    */
-  def toJson()
+  abstract JsonMedia print(JsonMedia media)
+
+  /**
+   * Used to return the in-memory representation of the printed JsonMedia
+   * <p>
+   * @return Object return an in-memory rapresentation of the JsonMedia printed by the class
+   */
+  def toJson() {
+		this.print(new JsonMedia()).structure()
+  }
 
 }
