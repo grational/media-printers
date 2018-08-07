@@ -171,4 +171,58 @@ class CsvMediaUSpec extends Specification {
 			csvHeader == 'ID,NAME,SIGN,DESCRIPTION,CATEGORY,ADDRESS,LATITUDE,LONGITUDE,LOGO,ZIP,CITY,PROVINCE,REGION,COUNTRY,PHONES,IMAGES,EMAILS,SITE,OPENINGS,SERVICES,SPECIALTIES,PAYMENT_OPTIONS'
 			csvRow    == '''ristorantececcarelli,"Ristorante Ceccarelli","Ristorante Ceccarelli","Situato a Torino nel quartiere Borgo Po zona Gran Madre, il Ristorante Ceccarelli propone una cucina nazionale di qualità caratterizzata da piatti tipici della tradizione culinaria piemontese e toscana. Oltre ad un'ampia scelta di antipasti, il ristorante propone tante specialità a base di carne e di pesce, ottima carne chianina, specialità stagionali come i funghi, serviti in diversi modi. Particolarmente degni di nota il fritto misto, piatto tipico piemontese, i calamaretti, la zuppa con farro e scampi, il fritto di cervella e fiori di zucchina e i golosi dolci della casa. Ampia la scelta dei vini, con etichette nazionali e locali. Il Ristorante Ceccarelli è in via S. Santarosa 7/b. Per prenotazioni contattare lo 011 8193736 o il 348 9018484.",Restaurant,"Via Santorre Di Santarosa, 7",45.06302,7.70061,https://img.pgol.it/img/R3/76/70/07/0/R37670070_LG.gif,10131,Torino,TO,Piemonte,it,"mobile::+39 348 9018484||fisso::+39 011 8193736||fax::+39 011 8193736",https://img.pgol.it/img/R3/76/70/07/0/13296736.jpg,ristorantececcarelli@gmail.com,http://www.ristorantececcarelli.it,"1:12:30:14:30,1:19:30:22:30,2:closed,3:19:30:22:30,4:12:30:14:30,4:19:30:22:30,5:12:30:14:30,5:19:30:22:30,6:12:30:14:30,6:19:30:22:30,7:12:30:14:30,7:19:30:22:30","ampia scelta di vini||pranzi aziendali||servizio di catering","antipasti||carne chianina||cucina nazionale||cucina piemontese||cucina toscana||dolci della casa||fritto misto||pesce||specialità carne||specialità funghi||specialità stagionali","bancomat||carte di credito||solo contanti"'''
 	}
+
+	def "Should correctly merge another compatible Media"() {
+		given: 'two different map Media'
+			Media firstMedia  = new CsvMedia()
+			                      .with('first',  'v1')
+			                      .with('second', 'v2')
+			                      .with('third',  'v3')
+
+			Media secondMedia = new JsonMedia()
+			                      .with('fourth', 'v4')
+			                      .with('fifth',  'v5')
+			                      .with('sixth',  'v6')
+		when:
+			Media mergedMedia = firstMedia.with(secondMedia)
+		then:
+			mergedMedia.header() == 'first,second,third,fourth,fifth,sixth'
+			mergedMedia.row()    == 'v1,v2,v3,v4,v5,v6'
+	}
+
+	def "Should raise an exception when you try to merge an incompatible Media"() {
+		given: 'two incompatible Media'
+			Media firstMedia  = new CsvMedia()
+			                      .with('first',  'v1')
+			                      .with('second', 'v2')
+			                      .with('third',  'v3')
+
+			Media secondMedia = new JsonMedia([])
+			                      .with(true)           // Boolean
+			                      .with(0)              // Number
+			                      .with('one')          // String
+			                      .with([1, 2, 3])      // List
+			                      .with([key: 'value']) // Map
+
+		when:
+			Media mergedMedia = firstMedia.with(secondMedia)
+		then:
+			def exception = thrown(UnsupportedOperationException)
+			exception.message == 'The second Media is not compatible with the CsvMedia type'
+	}
+
+	def "Should raise an exception for each required but unsupported operations"() {
+		setup:
+			Media csvMedia = new CsvMedia()
+
+		when:
+			csvMedia.with(data)
+
+		then:
+			def exception = thrown(UnsupportedOperationException)
+			exception.message == 'this operation is not compatible with the CsvMedia type'
+
+		where:
+			data << [ [a: 1], [1, 2], 3.14f, "string", true]
+	}
 }

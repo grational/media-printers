@@ -43,6 +43,68 @@ class CsvMedia implements Media {
 		)
 	}
 
+	@Override
+	Media with(Map data) {
+		throw new UnsupportedOperationException (
+			'this operation is not compatible with the CsvMedia type'
+		)
+	}
+
+	@Override
+	Media with(List data) {
+		throw new UnsupportedOperationException (
+			'this operation is not compatible with the CsvMedia type'
+		)
+	}
+
+	@Override
+	Media with(Number data) {
+		throw new UnsupportedOperationException (
+			'this operation is not compatible with the CsvMedia type'
+		)
+	}
+
+	@Override
+	Media with(String data) {
+		throw new UnsupportedOperationException (
+			'this operation is not compatible with the CsvMedia type'
+		)
+	}
+
+	@Override
+	Media with(Boolean data) {
+		throw new UnsupportedOperationException (
+			'this operation is not compatible with the CsvMedia type'
+		)
+	}
+
+	/**
+	 * This method merge two different CsvMedia into one.
+	 * Actually generate a new CsvMedia class merged with the other one
+	 *
+	 * @param another another CsvMedia
+	 * @return Media return an object CsvMedia that contains both the fields
+	 * @throws UnsupportedOperationException
+	 */
+	@Override
+	Media with(Media another) {
+		if ( ! ( another.structure() in Map ) )
+			throw new UnsupportedOperationException (
+				'The second Media is not compatible with the CsvMedia type'
+			)
+
+		new CsvMedia (
+			fields:         this.fields << another.structure(),
+			separator:      this.separator,
+			transformation: this.transformation
+		)
+	}
+
+	@Override
+	def structure() {
+		this.fields
+	}
+
 	/**
 	 * Returns a CSV representation of all the keys
 	 *

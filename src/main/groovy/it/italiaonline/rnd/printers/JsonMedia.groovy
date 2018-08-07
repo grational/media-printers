@@ -3,7 +3,7 @@ package it.italiaonline.rnd.printers
 import groovy.json.JsonGenerator
 
 /**
- * This class is used to build a CSV representation of an object
+ * This class is used to build a Json representation of an object
  */
 class JsonMedia implements Media {
 
@@ -17,6 +17,7 @@ class JsonMedia implements Media {
 	JsonMedia() {
 		this([:])
 	}
+
 	JsonMedia(Map map) {
 		this.content = map ?: [:]
 	}
@@ -45,32 +46,51 @@ class JsonMedia implements Media {
 		return media
 	}
 
+	@Override
 	Media with(Map data) {
 		listWith(data)
 	}
 
+	@Override
 	Media with(List data) {
 		listWith(data)
 	}
 
+	@Override
 	Media with(Number data) {
 		listWith(data)
 	}
 
+	@Override
 	Media with(String data) {
 		listWith(data)
 	}
 
+	@Override
 	Media with(Boolean data) {
 		listWith(data)
 	}
 
-	Media merge(JsonMedia another) {
-		if ( (this.content in Map) && (another.content in List) )
+	@Override
+	Media with(Media another) {
+		if ( (this.content in Map) && !(another.structure() in Map) )
 			throw new UnsupportedOperationException(
-				'Cannot insert a json array into a json object'
+				'The second Media is not compatible with this JsonMedia type'
 			)
-		new JsonMedia(this.content + another.content)
+		new JsonMedia(this.content + another.structure())
+	}
+
+	@Override
+	def structure() {
+		this.content
+	}
+
+	String json() {
+		def jsonOutput = new JsonGenerator.Options()
+		                     .disableUnicodeEscaping() // Do not escape UNICODE
+		                     .addConverter(Jsonable) { it.toJson() }
+		                     .build()
+		jsonOutput.toJson(this.content)
 	}
 
 	private Media listWith(def data) {
@@ -81,11 +101,4 @@ class JsonMedia implements Media {
 		new JsonMedia(this.content.clone() << data)
 	}
 
-	String json() {
-		def jsonOutput = new JsonGenerator.Options()
-		                      .disableUnicodeEscaping() // Do not escape UNICODE
-                         .addConverter(Jsonable) { it.toJson() }
-                         .build()
-		jsonOutput.toJson(this.content)
-	}
 }

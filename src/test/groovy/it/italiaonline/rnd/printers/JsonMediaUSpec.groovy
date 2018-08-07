@@ -75,13 +75,13 @@ class JsonMediaUSpec extends Specification {
 				.with('label','value')
 		then:
 			def exception = thrown(UnsupportedOperationException)
-			exception.message == "Cannot load an Entry into a json array"
+			exception.message == 'Cannot load an Entry into a json array'
 	}
 
 	def "Should correctly merge two maps"() {
 		given: 'build an empty JsonMedia'
 			Media jsonPrinter = new JsonMedia()
-		and: 'two different maps Media'
+		and: 'two different map Media'
 			Media firstMedia  = jsonPrinter
 			                      .with('first',  'v1')
 			                      .with('second', 'v2')
@@ -92,7 +92,7 @@ class JsonMediaUSpec extends Specification {
 			                      .with('fifth',  'v5')
 			                      .with('sixth',  'v6')
 		when:
-			Media mergedMedia = firstMedia.merge(secondMedia)
+			Media mergedMedia = firstMedia.with(secondMedia)
 		then:
 			mergedMedia.json() == '{"first":"v1","second":"v2","third":"v3","fourth":"v4","fifth":"v5","sixth":"v6"}'
 	}
@@ -100,7 +100,7 @@ class JsonMediaUSpec extends Specification {
 	def "Should correctly merge two lists"() {
 		given: 'build an empty JsonMedia'
 			Media arrayJsonPrinter = new JsonMedia([])
-		and: 'two different maps Media'
+		and: 'two different list Media'
 			Media firstMedia  = arrayJsonPrinter
 			                      .with(true)           // Boolean
 			                      .with(0)              // Number
@@ -115,7 +115,7 @@ class JsonMediaUSpec extends Specification {
 			                      .with([3, 2, 1])      // List
 			                      .with([yek: 'eulav']) // Map
 		when:
-			Media mergedMedia = firstMedia.merge(secondMedia)
+			Media mergedMedia = firstMedia.with(secondMedia)
 		then:
 			mergedMedia.json() == '''[true,0,"one",[1,2,3],{"key":"value"},false,1,"eno",[3,2,1],{"yek":"eulav"}]'''
 	}
@@ -124,7 +124,7 @@ class JsonMediaUSpec extends Specification {
 		given: 'build an empty JsonMedia'
 			Media arrayJsonPrinter  = new JsonMedia([])
 			Media objectJsonPrinter = new JsonMedia([:])
-		and: 'two different maps Media'
+		and: 'two differently loaded Media'
 			Media firstMedia  = arrayJsonPrinter
 			                      .with(true)           // Boolean
 			                      .with(0)              // Number
@@ -138,16 +138,16 @@ class JsonMediaUSpec extends Specification {
 			                      .with('third',  'v3')
 
 		when:
-			Media mergedMedia = firstMedia.merge(secondMedia)
+			Media mergedMedia = firstMedia.with(secondMedia)
 		then:
 			mergedMedia.json() == '''[true,0,"one",[1,2,3],{"key":"value"},{"first":"v1","second":"v2","third":"v3"}]'''
 	}
 
-	def "Should correctly merge a map with a list"() {
-		given: 'build an empty JsonMedia'
+	def "Should raise an exception when you try to merge a map with a list"() {
+		given: 'build empty JsonMedia'
 			Media objectJsonPrinter = new JsonMedia([:])
 			Media arrayJsonPrinter  = new JsonMedia([])
-		and: 'two different maps Media'
+		and: 'two differently loaded Media'
 			Media firstMedia  = objectJsonPrinter
 			                      .with('first',  'v1')
 			                      .with('second', 'v2')
@@ -161,9 +161,9 @@ class JsonMediaUSpec extends Specification {
 			                      .with([key: 'value']) // Map
 
 		when:
-			Media mergedMedia = firstMedia.merge(secondMedia)
+			Media mergedMedia = firstMedia.with(secondMedia)
 		then:
 			def exception = thrown(UnsupportedOperationException)
-			exception.message == 'Cannot insert a json array into a json object'
+			exception.message == 'The second Media is not compatible with this JsonMedia type'
 	}
 }
