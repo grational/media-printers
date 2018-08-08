@@ -211,18 +211,4 @@ class CsvMediaUSpec extends Specification {
 			exception.message == 'The second Media is not compatible with the CsvMedia type'
 	}
 
-	def "Should raise an exception for each required but unsupported operations"() {
-		setup:
-			Media csvMedia = new CsvMedia()
-
-		when:
-			csvMedia.with(data)
-
-		then:
-			def exception = thrown(UnsupportedOperationException)
-			exception.message == 'this operation is not compatible with the CsvMedia type'
-
-		where:
-			data << [ [a: 1], [1, 2], 3.14f, "string", true]
-	}
 }

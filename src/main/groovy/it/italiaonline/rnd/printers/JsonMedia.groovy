@@ -47,42 +47,12 @@ class JsonMedia implements Media {
 	}
 
 	@Override
-	Media with(Map data) {
-		listWith(data)
-	}
-
-	@Override
-	Media with(List data) {
-		listWith(data)
-	}
-
-	@Override
-	Media with(Number data) {
-		listWith(data)
-	}
-
-	@Override
-	Media with(String data) {
-		listWith(data)
-	}
-
-	@Override
-	Media with(Boolean data) {
-		listWith(data)
-	}
-
-	@Override
 	Media with(Media another) {
 		if ( (this.content in Map) && !(another.structure() in Map) )
 			throw new UnsupportedOperationException(
 				'The second Media is not compatible with this JsonMedia type'
 			)
 		new JsonMedia(this.content + another.structure())
-	}
-
-	@Override
-	def structure() {
-		this.content
 	}
 
 	String json() {
@@ -92,6 +62,59 @@ class JsonMedia implements Media {
 		                     .build()
 		jsonOutput.toJson(this.content)
 	}
+
+	/**
+	 * This method returns the in-memory structure of the JsonMedia
+	 * <p>
+	 * @return Object return an object that contains the in-memory data structure
+	 */
+	@Override
+	def structure() { this.content }
+
+	/**
+	 * This method load a Map into the class accumulator
+	 * <p>
+	 * @param data the Map to be loaded into the class accumulator
+	 * @return Media  return an object Media that contains the new value
+	 * @throws UnsupportedOperationException
+	 */
+	Media with(Map data) { listWith(data) }
+
+	/**
+	 * This method load a List into the class accumulator
+	 * <p>
+	 * @param data the List to be loaded into the class accumulator
+	 * @return Media  return an object Media that contains the new value
+	 * @throws UnsupportedOperationException
+	 */
+	Media with(List data) { listWith(data) }
+
+	/**
+	 * This method load a Number into the class accumulator
+	 * <p>
+	 * @param data the Number to be loaded into the class accumulator
+	 * @return Media  return an object Media that contains the new value
+	 * @throws UnsupportedOperationException
+	 */
+	Media with(Number data) { listWith(data) }
+
+	/**
+	 * This method load a String into the class accumulator
+	 * <p>
+	 * @param data the String to be loaded into the class accumulator
+	 * @return Media  return an object Media that contains the new value
+	 * @throws UnsupportedOperationException
+	 */
+	Media with(String data) { listWith(data) }
+
+	/**
+	 * This method load a Boolean into the class accumulator
+	 * <p>
+	 * @param data the Boolean to be loaded into the class accumulator
+	 * @return Media  return an object Media that contains the new value
+	 * @throws UnsupportedOperationException
+	 */
+	Media with(Boolean data) { listWith(data) }
 
 	private Media listWith(def data) {
 		if (this.content in Map)

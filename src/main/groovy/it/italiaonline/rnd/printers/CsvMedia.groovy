@@ -43,41 +43,6 @@ class CsvMedia implements Media {
 		)
 	}
 
-	@Override
-	Media with(Map data) {
-		throw new UnsupportedOperationException (
-			'this operation is not compatible with the CsvMedia type'
-		)
-	}
-
-	@Override
-	Media with(List data) {
-		throw new UnsupportedOperationException (
-			'this operation is not compatible with the CsvMedia type'
-		)
-	}
-
-	@Override
-	Media with(Number data) {
-		throw new UnsupportedOperationException (
-			'this operation is not compatible with the CsvMedia type'
-		)
-	}
-
-	@Override
-	Media with(String data) {
-		throw new UnsupportedOperationException (
-			'this operation is not compatible with the CsvMedia type'
-		)
-	}
-
-	@Override
-	Media with(Boolean data) {
-		throw new UnsupportedOperationException (
-			'this operation is not compatible with the CsvMedia type'
-		)
-	}
-
 	/**
 	 * This method merge two different CsvMedia into one.
 	 * Actually generate a new CsvMedia class merged with the other one
@@ -111,7 +76,7 @@ class CsvMedia implements Media {
 	 * @return String  a csv row composed by the keys in the fields
 	 */
 	String header() {
-		csvify(this.fields.keySet())
+		this.csvify(this.fields.keySet())
 	}
 
 	/**
@@ -127,14 +92,14 @@ class CsvMedia implements Media {
 	 * - A (double) quote character in a field must be represented by two (double) quote characters.
 	 */
 	String row() {
-		csvify(this.fields.values())
+		this.csvify(this.fields.values())
 	}
 
 	private String csvify(Collection c) {
 		c.collect { f ->
 			String field = this.transformation.transform(f)
 			field = field.replaceAll('"','""')
-			(field =~ /[\s"]|\Q${separator}\E/) ?  /"${field}"/ : field
+			(field =~ /[\s"]|\Q${separator}\E/) ? /"${field}"/ : field
 		}.join(this.separator)
 	}
 }

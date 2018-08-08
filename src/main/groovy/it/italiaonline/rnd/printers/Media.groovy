@@ -17,51 +17,6 @@ interface Media {
   Media with(String name, def value)
 
   /**
-   * This method load a Map into the class accumulator
-   * <p>
-   * @param data the Map to be loaded into the class accumulator
-   * @return Media  return an object Media that contains also the map
-   * @throws UnsupportedOperationException
-   */
-	Media with(Map data)
-
-  /**
-   * This method load a List into the class accumulator
-   * <p>
-   * @param data the List to be loaded into the class accumulator
-   * @return Media  return an object Media that contains also the list
-   * @throws UnsupportedOperationException
-   */
-	Media with(List data)
-
-  /**
-   * This method load a Number into the class accumulator
-   * <p>
-   * @param data the Map to be loaded into the class accumulator
-   * @return Media  return an object Media that contains also the number
-   * @throws UnsupportedOperationException
-   */
-	Media with(Number data)
-
-  /**
-   * This method load a String into the class accumulator
-   * <p>
-   * @param data the Map to be loaded into the class accumulator
-   * @return Media  return an object Media that contains also the string
-   * @throws UnsupportedOperationException
-   */
-	Media with(String data)
-
-  /**
-   * This method load a Boolean into the class accumulator
-   * <p>
-   * @param data the Map to be loaded into the class accumulator
-   * @return Media  return an object Media that contains also the boolean
-   * @throws UnsupportedOperationException
-   */
-	Media with(Boolean data)
-
-  /**
    * This method load another Media into the class accumulator
    * <p>
    * @param another a compatible media
