@@ -55,10 +55,10 @@ repositories {
 
 dependencies {
 	// Groovy language support
-	compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-
-	// Slf4j dependencies with log4j2 backend
-	compile "org.slf4j:slf4j-api:$slf4jVersion"
+	implementation (
+		"org.codehaus.groovy:groovy:$groovyVersion",
+		"org.codehaus.groovy:groovy-json:$groovyVersion"
+	)
 
 	// We use the awesome Spock testing and specification framework
 	testCompile "org.spockframework:spock-core:$spockVersion"
