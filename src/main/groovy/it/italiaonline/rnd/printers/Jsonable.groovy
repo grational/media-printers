@@ -3,7 +3,7 @@ package it.italiaonline.rnd.printers
 /**
  * This abstract class describes objects cabable of impressing themselves on a JsonMedia
  */
-abstract class Jsonable implements Printable {
+abstract class Jsonable {
 
   /**
    * This method is used to print the object on a JsonMedia
@@ -11,7 +11,7 @@ abstract class Jsonable implements Printable {
    * @param jsonMedia a JsonMedia object
    * @return JsonMedia return a JsonMedia object that contains all the relevant fields
    */
-  abstract Media print(Media media)
+  abstract JsonMedia print(JsonMedia media)
 
   /**
    * Used to return the in-memory representation of the printed JsonMedia
