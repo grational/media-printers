@@ -12,6 +12,7 @@ class CsvMedia implements Media {
 	private final Map            fields
 	private final String         separator
 	private final Transformation transformation
+	private final Boolean        uppersnake
 
 	/**
 	 * Groovy-like constructor, just a map with parameters is passed.
@@ -23,6 +24,7 @@ class CsvMedia implements Media {
 		this.fields         = params?.fields         ?: [:]
 		this.separator      = params?.separator      ?: ','
 		this.transformation = params?.transformation ?: new Identity()
+		this.uppersnake     = params?.uppersnake     ?: false
 	}
 
 	/**
@@ -39,7 +41,8 @@ class CsvMedia implements Media {
 		new CsvMedia(
 			fields:         this.fields,
 			separator:      this.separator,
-			transformation: this.transformation
+			transformation: this.transformation,
+			uppersnake:     this.uppersnake
 		)
 	}
 
@@ -61,7 +64,8 @@ class CsvMedia implements Media {
 		new CsvMedia (
 			fields:         this.fields << another.structure(),
 			separator:      this.separator,
-			transformation: this.transformation
+			transformation: this.transformation,
+			uppersnake:     this.uppersnake
 		)
 	}
 
@@ -76,7 +80,8 @@ class CsvMedia implements Media {
 	 * @return String  a csv row composed by the keys in the fields
 	 */
 	String header() {
-		this.csvify(this.fields.keySet())
+		String header = this.csvify(this.fields.keySet())
+		return this.uppersnake ? this.uppersnake(header) : header
 	}
 
 	/**
@@ -93,6 +98,10 @@ class CsvMedia implements Media {
 	 */
 	String row() {
 		this.csvify(this.fields.values())
+	}
+
+	private String uppersnake(String header) {
+		header.replaceAll(/(?<=[a-z])([A-Z])/) { all, capitalLetter -> "_${capitalLetter}" }.toUpperCase()
 	}
 
 	private String csvify(Collection c) {

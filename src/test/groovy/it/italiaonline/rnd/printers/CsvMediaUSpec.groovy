@@ -65,6 +65,24 @@ class CsvMediaUSpec extends Specification {
 			csvRow    == 'v1,v2,v3'
 	}
 
+	def "Should correctly handle the translation from camelCase to UPPER_SNAKE_CASE"() {
+		setup: 'build a CsvMedia with a map passed as parameter'
+			Media csvPrinter = new CsvMedia(
+				fields: [
+					firstField:  'v1',
+					secondField: 'v2',
+					thirdField:  'v3'
+				],
+				uppersnake: true
+			)
+		when:
+			String csvHeader = csvPrinter.header()
+			String csvRow    = csvPrinter.row()
+		then:
+			csvHeader == 'FIRST_FIELD,SECOND_FIELD,THIRD_FIELD'
+			csvRow    == 'v1,v2,v3'
+	}
+
 	def "Should quote the needed fields passing maps"() {
 		setup:
 			Media csvPrinter = new CsvMedia()
