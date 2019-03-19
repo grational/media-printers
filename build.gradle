@@ -43,7 +43,7 @@ project.with {
 	description           'Provide and object the functionality to print itself on a media (currently csv,json)'
 }
 
-|// [crosscompile] source and target java version
+// [crosscompile] source and target java version
 allprojects {
 	sourceCompatibility = 8
 	targetCompatibility = sourceCompatibility
