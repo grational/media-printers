@@ -1,6 +1,9 @@
 # Created with 'gigawatt' using the API of https://www.gitignore.io #
 # @parameters: java gradle vim eclipse linux
 
+### Custom ###
+iol_build.gradle
+
 
 ### Vim ###
 # swap
