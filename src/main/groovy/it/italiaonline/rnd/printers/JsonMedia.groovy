@@ -46,6 +46,19 @@ class JsonMedia implements Media {
 		return media
 	}
 
+	/**
+	 * This method optionally load one of the supported data types into the map maccumulator
+	 * The decision is taken according to the Groovy Truth
+	 * <p>
+	 * @param name  a String used to label the value
+	 * @param value  an Object among these types: Map, List, Boolean, String, Number
+	 * @return Media  return an object JsonMedia that contains all the couples
+	 * @throws UnsupportedOperationException
+	 */
+	Media withOptional(String name, def value) {
+		return ( value ) ?  this.with(name,value) : new JsonMedia(this.content)
+	}
+
 	@Override
 	Media with(Media another) {
 		if ( (this.content in Map) && !(another.structure() in Map) )
@@ -114,6 +127,17 @@ class JsonMedia implements Media {
 	 * @throws UnsupportedOperationException
 	 */
 	Media with(Boolean data) { listWith(data) }
+
+	/**
+	 * This method load a Boolean into the class accumulator
+	 * <p>
+	 * @param data the Boolean to be loaded into the class accumulator
+	 * @return Media  return an object Media that contains the new value
+	 * @throws UnsupportedOperationException
+	 */
+	Media withOptional(def data) {
+		return (data) ? this.listWith(data) : new JsonMedia(this.content)
+	}
 
 	private Media listWith(def data) {
 		if (this.content in Map)

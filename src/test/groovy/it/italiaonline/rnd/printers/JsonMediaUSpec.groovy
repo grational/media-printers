@@ -166,4 +166,37 @@ class JsonMediaUSpec extends Specification {
 			def exception = thrown(UnsupportedOperationException)
 			exception.message == 'The second Media is not compatible with this JsonMedia type'
 	}
+
+	def "Should correctly handle the withOptional() method for a json object"() {
+		given: 'build empty JsonMedia'
+			Media objectJsonPrinter = new JsonMedia([:])
+		when: 'fill it'
+			Media objectMedia = objectJsonPrinter
+			                      .withOptional('first', 'v1')
+			                      .withOptional('second', null)
+			                      .withOptional('third', '')
+
+		then:
+			objectMedia.json() == '{"first":"v1"}'
+	}
+
+	def "Should correctly handle the withOptional() method for a json object"() {
+		given: 'build empty JsonMedia'
+			Media arrayJsonPrinter  = new JsonMedia([])
+		when: 'fill it with all the possible data types'
+			Media arrayMedia = arrayJsonPrinter
+			                     .withOptional(true)   // Boolean included
+			                     .withOptional(1)      // Number  included
+			                     .withOptional('str')  // String  included
+			                     .withOptional([1])    // List    included
+			                     .withOptional([a: 1]) // Map     included
+			                     .withOptional(null)   // null    NOT included
+			                     .withOptional(false)  // Boolean NOT included
+			                     .withOptional(0)      // Number  NOT included
+			                     .withOptional('')     // String  NOT included
+			                     .withOptional([])     // List    NOT included
+			                     .withOptional([:])    // Map     NOT included
+		then:
+			arrayMedia.json() == '[true,1,"str",[1],{"a":1}]'
+	}
 }
