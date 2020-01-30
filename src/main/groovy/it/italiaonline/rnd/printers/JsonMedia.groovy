@@ -31,14 +31,18 @@ class JsonMedia implements Media {
 	 * Actually generate a new JsonMedia class incremented with the additional values
 	 *
 	 * @param name  a String used to label the value
-	 * @param value  an Object among these types: Map, List, Boolean, String, Number
+	 * @param value  an Object among these types: Map, List, Boolean, String, Number, Media
 	 * @return Media  return an object JsonMedia that contains all the couples
 	 */
 	@Override
 	Media with(String name, def value) {
 		def media
 		if (this.content in Map)
-			media = new JsonMedia(this.content + [(name): value])
+				media = new JsonMedia (
+					this.content + [
+						(name): ((value in Media) ? value.structure() : value)
+					]
+				)
 		else
 			throw new UnsupportedOperationException (
 				'Cannot load an Entry into a json array'

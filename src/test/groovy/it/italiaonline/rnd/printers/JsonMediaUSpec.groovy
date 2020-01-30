@@ -143,6 +143,27 @@ class JsonMediaUSpec extends Specification {
 			mergedMedia.json() == '''[true,0,"one",[1,2,3],{"key":"value"},{"first":"v1","second":"v2","third":"v3"}]'''
 	}
 
+	def "Should correctly add a list to a map if it is passed as an entry"() {
+		given: 'build a JsonObject and a JsonArray'
+			Media jsonObject = new JsonMedia([:])
+			Media jsonArray = new JsonMedia([])
+		and: 'differently loaded'
+			jsonObject = jsonObject.with('first', 'v1')
+			                       .with('second', 'v2')
+			                       .with('third', 'v3')
+
+			jsonArray  = jsonArray.with(true)           // Boolean
+			                      .with(0)              // Number
+			                      .with('one')          // String
+			                      .with([1, 2, 3])      // List
+			                      .with([key: 'value']) // Map
+
+		when:
+			Media mergedObject = jsonObject.with('array',jsonArray)
+		then:
+			mergedObject.json() == '''{"first":"v1","second":"v2","third":"v3","array":[true,0,"one",[1,2,3],{"key":"value"}]}'''
+	}
+
 	def "Should raise an exception when you try to merge a map with a list"() {
 		given: 'build empty JsonMedia'
 			Media objectJsonPrinter = new JsonMedia([:])
@@ -199,4 +220,5 @@ class JsonMediaUSpec extends Specification {
 		then:
 			arrayMedia.json() == '[true,1,"str",[1],{"a":1}]'
 	}
+
 }
