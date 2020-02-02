@@ -57,10 +57,7 @@ repositories {
 dependencies {
 	// Groovy language support
 	api (
-		"org.codehaus.groovy:groovy:$groovyVersion"
-	)
-
-	implementation (
+		"org.codehaus.groovy:groovy:$groovyVersion",
 		"org.codehaus.groovy:groovy-json:$groovyVersion"
 	)
 
