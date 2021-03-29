@@ -30,7 +30,7 @@ plugins {
 project.ext {
 	groovyVersion   = '2.5.14'
 	gradleVersion   = '6.8.3'
-	spockVersion    = '1.3-groovy-2.5'
+	spockVersion    = '2.0-M5-groovy-2.5'
 	codenarcVersion = '2.0.0'
 	slf4jVersion    = '1.7.30'
 	wrapper.gradleVersion "$gradleVersion"
@@ -93,5 +93,10 @@ check {
 	dependsOn 'cobertura'
 	// set the correct order for the dep tasks
 	tasks.findByName('cobertura').mustRunAfter 'clean'
+}
+
+tasks.withType(Test) {
+	useJUnitPlatform() 
+	maxParallelForks = Runtime.runtime.availableProcessors() / 2
 }
 // vim: ft=groovy:fdm=indent
