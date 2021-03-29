@@ -37,9 +37,10 @@ class CsvMedia implements Media {
 	 */
 	@Override
 	Media with(String name, def value) {
-		this.fields.put(name, value)
-		new CsvMedia(
-			fields:         this.fields,
+		Map fieldsCopy = this.fields.clone()
+		fieldsCopy.put(name,value)
+		new CsvMedia (
+			fields:         fieldsCopy,
 			separator:      this.separator,
 			transformation: this.transformation,
 			uppersnake:     this.uppersnake

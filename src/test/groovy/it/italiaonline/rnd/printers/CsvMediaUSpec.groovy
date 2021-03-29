@@ -17,7 +17,7 @@ class CsvMediaUSpec extends Specification {
 		setup: 'build an empty CsvMedia'
 			Media csvPrinter = new CsvMedia()
 		when:
-			csvPrinter
+			csvPrinter = csvPrinter
 				.with('first',  'v1')
 				.with('second', 'v2')
 				.with('third',  'v3')
@@ -32,7 +32,7 @@ class CsvMediaUSpec extends Specification {
 		setup: 'build an empty CsvMedia'
 			Media csvPrinter = new CsvMedia(separator: separator)
 		when:
-			csvPrinter
+			csvPrinter = csvPrinter
 				.with('first',  'v1')
 				.with('second', 'v2')
 				.with('third',  'v3')
@@ -50,7 +50,7 @@ class CsvMediaUSpec extends Specification {
 
 	def "Should return the correct values using a map passed through constructor"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
-			Media csvPrinter = new CsvMedia(
+			Media csvPrinter = new CsvMedia (
 				fields: [
 					first:  'v1',
 					second: 'v2',
@@ -67,7 +67,7 @@ class CsvMediaUSpec extends Specification {
 
 	def "Should correctly handle the translation from camelCase to UPPER_SNAKE_CASE"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
-			Media csvPrinter = new CsvMedia(
+			Media csvPrinter = new CsvMedia (
 				fields: [
 					firstField:  'v1',
 					secondField: 'v2',
@@ -87,7 +87,7 @@ class CsvMediaUSpec extends Specification {
 		setup:
 			Media csvPrinter = new CsvMedia()
 		when:
-			csvPrinter
+			csvPrinter = csvPrinter
 				.with(h1,v1)
 				.with(h2,v2)
 				.with(h3,v3)
@@ -103,7 +103,7 @@ class CsvMediaUSpec extends Specification {
 
 	def "Should work also changing separator"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
-			Media csvPrinter = new CsvMedia(
+			Media csvPrinter = new CsvMedia (
 				fields: [
 					first:  'v1',
 					second: 'v2',
@@ -121,7 +121,7 @@ class CsvMediaUSpec extends Specification {
 
 	def "Should apply correctly the transformation passed as parameter"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
-			Media csvPrinter = new CsvMedia(
+			Media csvPrinter = new CsvMedia (
 				fields: [
 					PHONES: [mobile: '+39 348 9018484', fisso: '+39 011 8193736', fax: '+39 011 8193736'],
 					IMAGES: ['https://img.pgol.it/img/R3/76/70/07/0/13296736.jpg'],
@@ -138,12 +138,12 @@ class CsvMediaUSpec extends Specification {
 
 	def "Should apply correctly the transformation using with"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
-			Media csvPrinter = new CsvMedia(
+			Media csvPrinter = new CsvMedia (
 				separator:      '||',
 				transformation: new FlattenedStructure()
 			)
 		when:
-			csvPrinter
+			csvPrinter = csvPrinter
 				.with('PHONES', [mobile: '+39 348 9018484', fisso: '+39 011 8193736', fax: '+39 011 8193736'])
 				.with('IMAGES', ['https://img.pgol.it/img/R3/76/70/07/0/13296736.jpg'])
 			String csvHeader = csvPrinter.header()
@@ -155,7 +155,7 @@ class CsvMediaUSpec extends Specification {
 
 	def "Should satisfy this real test case"() {
 		setup: 'build a CsvMedia with a map passed as parameter'
-			Media csvPrinter = new CsvMedia(
+			Media csvPrinter = new CsvMedia (
 				fields: [
 					ID: 'ristorantececcarelli',
 					NAME: 'Ristorante Ceccarelli',
