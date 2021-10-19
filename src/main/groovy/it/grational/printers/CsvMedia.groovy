@@ -1,8 +1,8 @@
-package it.italiaonline.rnd.printers
+package it.grational.printers
 
 // internal deps
-import it.italiaonline.rnd.transform.Transformation
-import it.italiaonline.rnd.transform.Identity
+import it.grational.transform.Transformation
+import it.grational.transform.Identity
 
 /**
  * This class is used to build a CSV representation of an object
@@ -112,4 +112,5 @@ class CsvMedia implements Media {
 			(field =~ /[\s"]|\Q${separator}\E/) ? /"${field}"/ : field
 		}.join(this.separator)
 	}
+
 }

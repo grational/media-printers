@@ -1,4 +1,4 @@
-package it.italiaonline.rnd.printers
+package it.grational.printers
 
 import groovy.json.JsonGenerator
 

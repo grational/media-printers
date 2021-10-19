@@ -1,8 +1,8 @@
-package it.italiaonline.rnd.printers
+package it.grational.printers
 
 import spock.lang.*
 
-import it.italiaonline.rnd.transform.*
+import it.grational.transform.*
 
 /**
  * This class test the correct output of the JsonMedia class

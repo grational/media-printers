@@ -1,4 +1,4 @@
-package it.italiaonline.rnd.printers
+package it.grational.printers
 
 /**
  * This abstract class describes objects cabable of impressing themselves on a JsonMedia as arrays

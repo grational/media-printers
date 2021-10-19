@@ -10,12 +10,6 @@ plugins {
 	id 'java-library'
 	// support for groovy
 	id 'groovy'
-	// autogenerate eclipse project files
-	id 'eclipse'
-	// create and html index linking every report generated
-	id 'build-dashboard'
-	// view of the project (jars used, navigable source tree)
-	id 'project-report'
 	// groovy code linter
 	id 'codenarc'
 	// test code coverage plugin
@@ -28,12 +22,10 @@ plugins {
 
 // [general] configuration
 project.ext {
-	groovyVersion   = '2.5.14'
-	gradleVersion   = '6.8.3'
-	spockVersion    = '2.0-M5-groovy-2.5'
+	groovyVersion   = '3.0.9'
+	spockVersion    = '2.0-groovy-3.0'
 	codenarcVersion = '2.0.0'
-	slf4jVersion    = '1.7.30'
-	wrapper.gradleVersion "$gradleVersion"
+	slf4jVersion    = '1.7.32'
 }
 
 scmVersion {

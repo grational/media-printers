@@ -1,4 +1,4 @@
-package it.italiaonline.rnd.transform
+package it.grational.transform
 
 import spock.lang.*
 
@@ -65,13 +65,8 @@ class FlattenedStructureUSpec extends Specification {
 		then:
 			output == expected
 		where:
-			ds || expected
+			ds  || expected
 			[:] || ''
-			/* Giuseppe Ricupero
-			 * 2018-07-26 20.17
-			 * NOTE: The empty list test has been removed due to this exception raised after the groovy 2.5.1 update
-			 * org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object '[]' with class 'java.util.ArrayList' to class 'java.util.Map' due to: groovy.lang.GroovyRuntimeException: Could not find matching constructor for: java.util.Map()
-			 * at it.italiaonline.rnd.transform.FlattenedStructureUSpec.Should return an empty String when an empty List or Map is passed(FlattenedStructureUSpec.groovy:73) */
-			// [] || ''
+			[]  || ''
 	}
 }

@@ -1,4 +1,4 @@
-package it.italiaonline.rnd.printers
+package it.grational.printers
 
 /**
  * This interface describe objects representing a printable media

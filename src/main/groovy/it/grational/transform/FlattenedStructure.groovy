@@ -1,4 +1,4 @@
-package it.italiaonline.rnd.transform
+package it.grational.transform
 
 class FlattenedStructure implements Transformation {
 
