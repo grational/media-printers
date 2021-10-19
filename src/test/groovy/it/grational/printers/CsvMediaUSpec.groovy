@@ -28,6 +28,21 @@ class CsvMediaUSpec extends Specification {
 			csvRow    == 'v1,v2,v3'
 	}
 
+	def "Should correctly handle the default values when the groovy truth is false"() {
+		setup: 'build an empty CsvMedia'
+			Media csvPrinter = new CsvMedia()
+		when:
+			csvPrinter = csvPrinter
+				.with('first',  0)
+				.with('second', false)
+				.with('third',  'v3')
+			String csvHeader = csvPrinter.header()
+			String csvRow    = csvPrinter.row()
+		then:
+			csvHeader == 'first,second,third'
+			csvRow    == '0,false,v3'
+	}
+
 	def "Should return the correct values using with and a custom separator"() {
 		setup: 'build an empty CsvMedia'
 			Media csvPrinter = new CsvMedia(separator: separator)
@@ -228,5 +243,6 @@ class CsvMediaUSpec extends Specification {
 			def exception = thrown(UnsupportedOperationException)
 			exception.message == 'The second Media is not compatible with the CsvMedia type'
 	}
+
 
 }

@@ -107,10 +107,14 @@ class CsvMedia implements Media {
 
 	private String csvify(Collection c) {
 		c.collect { f ->
-			String field = this.transformation.transform(f) ?: ''
+			String field = this.nullToEmptyString(this.transformation.transform(f))
 			field = field.replaceAll('"','""')
 			(field =~ /[\s"]|\Q${separator}\E/) ? /"${field}"/ : field
 		}.join(this.separator)
+	}
+
+	private String nullToEmptyString(def input) {
+		return (input == null) ? '' : input
 	}
 
 }
