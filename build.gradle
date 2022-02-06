@@ -22,10 +22,11 @@ plugins {
 
 // [general] configuration
 project.ext {
-	groovyVersion   = '3.0.9'
-	spockVersion    = '2.0-groovy-3.0'
-	codenarcVersion = '2.0.0'
-	slf4jVersion    = '1.7.32'
+	groovyVersion      = '3.0.9'
+	spockVersion       = '2.0-groovy-3.0'
+	codenarcVersion    = '2.2.0'
+	slf4jVersion       = '1.7.35'
+	specSupportVersion = 'release-0.1.6'
 }
 
 scmVersion {
@@ -48,8 +49,8 @@ allprojects {
 }
 
 repositories {
-	jcenter()
-	maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -60,7 +61,10 @@ dependencies {
 	)
 
 	// We use the awesome Spock testing and specification framework
-	testImplementation "org.spockframework:spock-core:$spockVersion"
+	testImplementation (
+		"org.spockframework:spock-core:$spockVersion",
+		"com.github.grational:specification-support:$specSupportVersion"
+	)
 }
 
 // codenarc groovy source analyses
