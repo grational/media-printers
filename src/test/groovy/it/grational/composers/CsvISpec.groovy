@@ -58,4 +58,25 @@ class CsvISpec extends Specification {
 		and: 'also the content of the outfile is empty'
 			outfile.readLines().size() == 0
 	}
+
+	def "Should execute the action passed when there are no media to write"() {
+		given:
+			def outfile = tff.create()
+		and:
+			def emptyMediaList = []
+		and:
+			def exceptionMessage = "No media to write"
+			def action = { throw new IllegalStateException(exceptionMessage) }
+
+		when:
+			def mediaWritten = new Csv (
+				file: outfile,
+				media: emptyMediaList,
+				action: action
+			).write()
+
+		then: 
+			def exception = thrown(IllegalStateException)
+			exception.message == exceptionMessage
+	}
 }
