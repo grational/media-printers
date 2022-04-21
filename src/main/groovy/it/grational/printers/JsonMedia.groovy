@@ -51,7 +51,7 @@ class JsonMedia implements Media {
 	}
 
 	/**
-	 * This method optionally load one of the supported data types into the map maccumulator
+	 * This method optionally load one of the supported data types into the map accumulator
 	 * The decision is taken according to the Groovy Truth
 	 * <p>
 	 * @param name  a String used to label the value
