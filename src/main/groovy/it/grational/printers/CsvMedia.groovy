@@ -1,5 +1,8 @@
 package it.grational.printers
 
+// external deps
+import groovy.transform.AutoClone
+
 // internal deps
 import it.grational.transform.Transformation
 import it.grational.transform.Identity
@@ -7,6 +10,7 @@ import it.grational.transform.Identity
 /**
  * This class is used to build a CSV representation of an object
  */
+@AutoClone
 class CsvMedia implements Media {
 
 	private final Map            fields

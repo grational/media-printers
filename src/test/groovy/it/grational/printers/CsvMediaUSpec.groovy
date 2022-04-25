@@ -244,5 +244,30 @@ class CsvMediaUSpec extends Specification {
 			exception.message == 'The second Media is not compatible with the CsvMedia type'
 	}
 
+	def "Should support cloning the media class"() {
+		given:
+			def firstMedia = new CsvMedia (
+				separator: ';',
+				uppersnake: true,
+				fields: [
+					a: 'first',
+					b: 'second',
+					c: 'third'
+				],
+			)
+		when:
+			def secondMedia = firstMedia.clone()
+		then:
+			!secondMedia.is(firstMedia)
+		and:
+			secondMedia.separator == ';'
+			secondMedia.uppersnake == true
+			secondMedia.fields == [
+				a: 'first',
+				b: 'second',
+				c: 'third'
+			]
+	}
+
 
 }
