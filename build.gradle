@@ -22,10 +22,10 @@ plugins {
 
 // [general] configuration
 project.ext {
-	groovyVersion      = '3.0.9'
-	spockVersion       = '2.0-groovy-3.0'
-	codenarcVersion    = '2.2.0'
-	slf4jVersion       = '1.7.35'
+	groovyVersion      = '3.0.10'
+	spockVersion       = '2.1-groovy-3.0'
+	codenarcVersion    = '3.0.0'
+	slf4jVersion       = '1.7.36'
 	specSupportVersion = 'release-0.1.6'
 }
 

@@ -247,26 +247,26 @@ class CsvMediaUSpec extends Specification {
 	def "Should support cloning the media class"() {
 		given:
 			def firstMedia = new CsvMedia (
-				separator: ';',
-				uppersnake: true,
-				fields: [
-					a: 'first',
-					b: 'second',
-					c: 'third'
-				],
+				fields: fields,
+				separator: separator,
+				uppersnake: uppersnake,
+				transformation: transformation
 			)
+
 		when:
 			def secondMedia = firstMedia.clone()
+
 		then:
 			!secondMedia.is(firstMedia)
 		and:
-			secondMedia.separator == ';'
-			secondMedia.uppersnake == true
-			secondMedia.fields == [
-				a: 'first',
-				b: 'second',
-				c: 'third'
-			]
+			secondMedia.fields == fields
+			secondMedia.separator == separator
+			secondMedia.uppersnake == uppersnake
+			secondMedia.transformation == transformation
+
+		where:
+			fields                                     | transformation | separator | uppersnake
+			[ first: 'v1', second: 'v2', third: 'v3' ] | new Identity() | ';'       | true
 	}
 
 
