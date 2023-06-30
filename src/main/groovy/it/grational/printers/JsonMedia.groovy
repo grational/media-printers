@@ -151,4 +151,9 @@ class JsonMedia implements Media {
 		new JsonMedia(this.content.clone() << data)
 	}
 
+	@Override
+	String toString() {
+		this.json()
+	}
+
 }

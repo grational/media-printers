@@ -126,4 +126,9 @@ class CsvMedia implements Media, Cloneable {
 		return (input == null) ? '' : input
 	}
 
+	@Override
+	String toString() {
+		this.row()
+	}
+
 }
