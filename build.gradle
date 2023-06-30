@@ -12,8 +12,6 @@ plugins {
 	id 'groovy'
 	// groovy code linter
 	id 'codenarc'
-	// test code coverage plugin
-	id 'net.saliman.cobertura' version '4.0.0'
 	// awesome git tag / gradle version integration
 	id 'pl.allegro.tech.build.axion-release' version '1.13.3'
 	// to upload on a nexus server
@@ -22,11 +20,11 @@ plugins {
 
 // [general] configuration
 project.ext {
-	groovyVersion      = '3.0.10'
-	spockVersion       = '2.1-groovy-3.0'
-	codenarcVersion    = '3.0.0'
-	slf4jVersion       = '1.7.36'
-	specSupportVersion = 'release-0.1.6'
+	groovyVersion      = '3.0.18'
+	spockVersion       = '2.3-groovy-3.0'
+	codenarcVersion    = '3.2.0'
+	slf4jVersion       = '2.0.7'
+	specSupportVersion = 'release-0.1.7'
 }
 
 scmVersion {
@@ -37,9 +35,9 @@ scmVersion {
 
 project.with {
 	//project.name is set in the settings.gradle with rootProject.name
-	group                 'it.grational'
-	version               scmVersion.version // '0.5.0' (remove -SNAPSHOT for releases)
-	description           'Provide and object the functionality to print itself on a media (currently csv,json)'
+	group       'it.grational'
+	version     scmVersion.version // '0.5.0' (remove -SNAPSHOT for releases)
+	description 'Provide and object the functionality to print itself on a media (currently csv,json)'
 }
 
 // [crosscompile] source and target java version
@@ -91,10 +89,6 @@ codenarc{
 check {
 	// clean before check
 	dependsOn 'clean'
-	// create the code coverage report
-	dependsOn 'cobertura'
-	// set the correct order for the dep tasks
-	tasks.findByName('cobertura').mustRunAfter 'clean'
 }
 
 tasks.withType(Test) {
