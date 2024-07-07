@@ -3,21 +3,20 @@ package it.grational.printers
 /**
  * This abstract class describes objects cabable of impressing themselves on a JsonMedia
  */
-protected abstract class Jsonable implements Printable {
+protected interface Jsonable extends Printable {
 
   /**
-   * This method is used to print the object on a JsonMedia
+   * Force an object to provide a default appropriate JsonMedia form: array or object
    * <p>
-   * @param jsonMedia a JsonMedia object
-   * @return JsonMedia return a JsonMedia object that contains all the relevant fields
+   * @return Object return an in-memory rapresentation of the JsonMedia printed by the class
    */
-  abstract Media print(Media media)
+  Media print()
 
   /**
    * Used to return the in-memory Map representation of the printed JsonMedia
    * <p>
    * @return Object return an in-memory rapresentation of the JsonMedia printed by the class
    */
-  abstract def toJson()
+  def toJson()
 
 }

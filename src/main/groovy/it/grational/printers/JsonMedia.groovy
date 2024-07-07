@@ -64,12 +64,16 @@ class JsonMedia implements Media {
 	}
 
 	@Override
-	Media with(Media another) {
+	Media with(Media another, boolean merge = true) {
 		if ( (this.content in Map) && !(another.structure() in Map) )
 			throw new UnsupportedOperationException(
 				'The second Media is not compatible with this JsonMedia type'
 			)
-		new JsonMedia(this.content + another.structure())
+		new JsonMedia (
+			merge
+			? this.content + another.structure()
+			: this.content << another.structure()
+		)
 	}
 
 	String json() {
