@@ -3,7 +3,7 @@ package it.grational.printers
 /**
  * This abstract class describes objects cabable of impressing themselves on a JsonMedia
  */
-protected interface Jsonable extends Printable {
+interface Jsonable extends Printable {
 
   /**
    * Force an object to provide a default appropriate JsonMedia form: array or object
