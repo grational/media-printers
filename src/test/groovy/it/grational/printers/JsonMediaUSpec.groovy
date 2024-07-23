@@ -27,11 +27,11 @@ class JsonMediaUSpec extends Specification {
 			Media jsonPrinter = new JsonMedia()
 		when:
 			String json = jsonPrinter
-			                .with('first',  'v1')
-			                .with('second', 'v2')
-			                .with('third',  'v3')
-			                .json()
-		then:
+				.with('first',  'v1')
+				.with('second', 'v2')
+				.with('third',  'v3')
+				.json()
+				then:
 			json == '{"first":"v1","second":"v2","third":"v3"}'
 	}
 
@@ -40,12 +40,12 @@ class JsonMediaUSpec extends Specification {
 			Media jsonPrinter = new JsonMedia([])
 		when:
 			String json = jsonPrinter
-			                .with(true)           // Boolean
-			                .with(0)              // Number
-			                .with('one')          // String
-			                .with([1, 2, 3])      // List
-			                .with([key: 'value']) // Map
-			                .json()
+				.with(true)           // Boolean
+				.with(0)              // Number
+				.with('one')          // String
+				.with([1, 2, 3])      // List
+				.with([key: 'value']) // Map
+				.json()
 		then:
 			json == '''[true,0,"one",[1,2,3],{"key":"value"}]'''
 	}
@@ -83,14 +83,14 @@ class JsonMediaUSpec extends Specification {
 			Media jsonPrinter = new JsonMedia()
 		and: 'two different map Media'
 			Media firstMedia  = jsonPrinter
-			                      .with('first',  'v1')
-			                      .with('second', 'v2')
-			                      .with('third',  'v3')
+				.with('first',  'v1')
+				.with('second', 'v2')
+				.with('third',  'v3')
 
 			Media secondMedia = jsonPrinter
-			                      .with('fourth', 'v4')
-			                      .with('fifth',  'v5')
-			                      .with('sixth',  'v6')
+				.with('fourth', 'v4')
+				.with('fifth',  'v5')
+				.with('sixth',  'v6')
 		when:
 			Media mergedMedia = firstMedia.with(secondMedia)
 		then:
@@ -102,20 +102,20 @@ class JsonMediaUSpec extends Specification {
 			Media arrayJsonPrinter = new JsonMedia([])
 		and: 'two different list Media'
 			Media firstMedia  = arrayJsonPrinter
-			                      .with(true)           // Boolean
-			                      .with(0)              // Number
-			                      .with('one')          // String
-			                      .with([1, 2, 3])      // List
-			                      .with([key: 'value']) // Map
+				.with(true)           // Boolean
+				.with(0)              // Number
+				.with('one')          // String
+				.with([1, 2, 3])      // List
+				.with([key: 'value']) // Map
 
 			Media secondMedia = arrayJsonPrinter
-			                      .with(false)          // Boolean
-			                      .with(1)              // Number
-			                      .with('eno')          // String
-			                      .with([3, 2, 1])      // List
-			                      .with([yek: 'eulav']) // Map
+				.with(false)          // Boolean
+				.with(1)              // Number
+				.with('eno')          // String
+				.with([3, 2, 1])      // List
+				.with([yek: 'eulav']) // Map
 		when:
-			Media mergedMedia = firstMedia.with(secondMedia)
+			Media mergedMedia = firstMedia.with(secondMedia, true)
 		then:
 			mergedMedia.json() == '''[true,0,"one",[1,2,3],{"key":"value"},false,1,"eno",[3,2,1],{"yek":"eulav"}]'''
 	}
@@ -126,16 +126,16 @@ class JsonMediaUSpec extends Specification {
 			Media objectJsonPrinter = new JsonMedia([:])
 		and: 'two differently loaded Media'
 			Media firstMedia  = arrayJsonPrinter
-			                      .with(true)           // Boolean
-			                      .with(0)              // Number
-			                      .with('one')          // String
-			                      .with([1, 2, 3])      // List
-			                      .with([key: 'value']) // Map
+				.with(true)           // Boolean
+				.with(0)              // Number
+				.with('one')          // String
+				.with([1, 2, 3])      // List
+				.with([key: 'value']) // Map
 
 			Media secondMedia = objectJsonPrinter
-			                      .with('first',  'v1')
-			                      .with('second', 'v2')
-			                      .with('third',  'v3')
+				.with('first',  'v1')
+				.with('second', 'v2')
+				.with('third',  'v3')
 
 		when:
 			Media mergedMedia = firstMedia.with(secondMedia)
@@ -148,15 +148,17 @@ class JsonMediaUSpec extends Specification {
 			Media jsonObject = new JsonMedia([:])
 			Media jsonArray = new JsonMedia([])
 		and: 'differently loaded'
-			jsonObject = jsonObject.with('first', 'v1')
-			                       .with('second', 'v2')
-			                       .with('third', 'v3')
+			jsonObject = jsonObject
+			.with('first', 'v1')
+			.with('second', 'v2')
+			.with('third', 'v3')
 
-			jsonArray  = jsonArray.with(true)           // Boolean
-			                      .with(0)              // Number
-			                      .with('one')          // String
-			                      .with([1, 2, 3])      // List
-			                      .with([key: 'value']) // Map
+			jsonArray  = jsonArray
+				.with(true)            // Boolean
+				.with(0)               // Number
+				.with('one')          // String
+				.with([1, 2, 3])      // List
+				.with([key: 'value']) // Map
 
 		when:
 			Media mergedObject = jsonObject.with('array',jsonArray)
@@ -170,16 +172,16 @@ class JsonMediaUSpec extends Specification {
 			Media arrayJsonPrinter  = new JsonMedia([])
 		and: 'two differently loaded Media'
 			Media firstMedia  = objectJsonPrinter
-			                      .with('first',  'v1')
-			                      .with('second', 'v2')
-			                      .with('third',  'v3')
+				.with('first',  'v1')
+				.with('second', 'v2')
+				.with('third',  'v3')
 
 			Media secondMedia = arrayJsonPrinter
-			                      .with(true)           // Boolean
-			                      .with(0)              // Number
-			                      .with('one')          // String
-			                      .with([1, 2, 3])      // List
-			                      .with([key: 'value']) // Map
+				.with(true)           // Boolean
+				.with(0)              // Number
+				.with('one')          // String
+				.with([1, 2, 3])      // List
+				.with([key: 'value']) // Map
 
 		when:
 			Media mergedMedia = firstMedia.with(secondMedia)
@@ -193,9 +195,9 @@ class JsonMediaUSpec extends Specification {
 			Media objectJsonPrinter = new JsonMedia([:])
 		when: 'fill it'
 			Media objectMedia = objectJsonPrinter
-			                      .withOptional('first', 'v1')
-			                      .withOptional('second', null)
-			                      .withOptional('third', '')
+				.withOptional('first', 'v1')
+				.withOptional('second', null)
+				.withOptional('third', '')
 
 		then:
 			objectMedia.json() == '{"first":"v1"}'
@@ -206,17 +208,17 @@ class JsonMediaUSpec extends Specification {
 			Media arrayJsonPrinter  = new JsonMedia([])
 		when: 'fill it with all the possible data types'
 			Media arrayMedia = arrayJsonPrinter
-			                     .withOptional(true)   // Boolean included
-			                     .withOptional(1)      // Number  included
-			                     .withOptional('str')  // String  included
-			                     .withOptional([1])    // List    included
-			                     .withOptional([a: 1]) // Map     included
-			                     .withOptional(null)   // null    NOT included
-			                     .withOptional(false)  // Boolean NOT included
-			                     .withOptional(0)      // Number  NOT included
-			                     .withOptional('')     // String  NOT included
-			                     .withOptional([])     // List    NOT included
-			                     .withOptional([:])    // Map     NOT included
+		 	 .withOptional(true)   // Boolean included
+		 	 .withOptional(1)      // Number  included
+		 	 .withOptional('str')  // String  included
+		 	 .withOptional([1])    // List    included
+		 	 .withOptional([a: 1]) // Map     included
+		 	 .withOptional(null)   // null    NOT included
+		 	 .withOptional(false)  // Boolean NOT included
+		 	 .withOptional(0)      // Number  NOT included
+		 	 .withOptional('')     // String  NOT included
+		 	 .withOptional([])     // List    NOT included
+		 	 .withOptional([:])    // Map     NOT included
 		then:
 			arrayMedia.json() == '[true,1,"str",[1],{"a":1}]'
 	}

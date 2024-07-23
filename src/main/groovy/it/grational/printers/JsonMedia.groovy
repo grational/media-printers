@@ -64,7 +64,7 @@ class JsonMedia implements Media {
 	}
 
 	@Override
-	Media with(Media another, boolean merge = true) {
+	Media with(Media another, boolean merge = false) {
 		if ( (this.content in Map) && !(another.structure() in Map) )
 			throw new UnsupportedOperationException(
 				'The second Media is not compatible with this JsonMedia type'
@@ -78,8 +78,8 @@ class JsonMedia implements Media {
 
 	String json() {
 		def jsonOutput = new JsonGenerator.Options()
-		                     .addConverter(Jsonable) { it.toJson() }
-		                     .build()
+			.addConverter(Jsonable) { it.toJson() }
+			.build()
 		jsonOutput.toJson(this.content)
 	}
 
@@ -98,7 +98,9 @@ class JsonMedia implements Media {
 	 * @return Media  return an object Media that contains the new value
 	 * @throws UnsupportedOperationException
 	 */
-	Media with(Map data) { listWith(data) }
+	Media with(Map data, boolean merge = false) {
+		listWith(data, merge)
+	}
 
 	/**
 	 * This method load a List into the class accumulator
@@ -107,7 +109,9 @@ class JsonMedia implements Media {
 	 * @return Media  return an object Media that contains the new value
 	 * @throws UnsupportedOperationException
 	 */
-	Media with(List data) { listWith(data) }
+	Media with(List data, boolean merge = false) {
+		listWith(data, merge)
+	}
 
 	/**
 	 * This method load a Number into the class accumulator
@@ -116,7 +120,7 @@ class JsonMedia implements Media {
 	 * @return Media  return an object Media that contains the new value
 	 * @throws UnsupportedOperationException
 	 */
-	Media with(Number data) { listWith(data) }
+	Media with(Number data) { listWith(data, false) }
 
 	/**
 	 * This method load a String into the class accumulator
@@ -125,7 +129,7 @@ class JsonMedia implements Media {
 	 * @return Media  return an object Media that contains the new value
 	 * @throws UnsupportedOperationException
 	 */
-	Media with(String data) { listWith(data) }
+	Media with(String data) { listWith(data, false) }
 
 	/**
 	 * This method load a Boolean into the class accumulator
@@ -134,25 +138,34 @@ class JsonMedia implements Media {
 	 * @return Media  return an object Media that contains the new value
 	 * @throws UnsupportedOperationException
 	 */
-	Media with(Boolean data) { listWith(data) }
+	Media with(Boolean data) { listWith(data, false) }
 
 	/**
-	 * This method load a Boolean into the class accumulator
+	 * This method load some data into the class accumulator if they are truthy
 	 * <p>
-	 * @param data the Boolean to be loaded into the class accumulator
-	 * @return Media  return an object Media that contains the new value
+	 * @param data the data to be loaded into the class accumulator
+	 * @return Media return an object Media that optionally contains the new value
 	 * @throws UnsupportedOperationException
 	 */
-	Media withOptional(def data) {
-		return (data) ? this.listWith(data) : new JsonMedia(this.content)
+	Media withOptional(def data, boolean merge = false) {
+		(data) ? this.listWith(data, merge) : new JsonMedia(this.content)
 	}
 
-	private Media listWith(def data) {
+	private Media listWith(def data, boolean merge) {
 		if (this.content in Map)
 			throw new UnsupportedOperationException (
 				"Cannot load '${data.getClass().getSimpleName()}' into a json object"
 			)
-		new JsonMedia(this.content.clone() << data)
+		def addition = ( data in Media ) ? data.structure() : data
+		new JsonMedia (
+			merge
+			? this.content.clone() + addition
+			: this.content.clone() << addition
+		)
+	}
+
+	boolean asBoolean() {
+		this.content as boolean
 	}
 
 	@Override
