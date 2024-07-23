@@ -17,9 +17,11 @@ class JsonObjectArray extends JsonArray {
 	 * @return A printed media
 	 */
 	@Override
-	Media print(Media media) {
+	Media print(Media media, boolean merge = false) {
 		array.inject(media) { JsonMedia accumulator, Jsonable element ->
-			accumulator.with(element.print())
+			( media.structure() )
+				? accumulator.withOptional(element.print(), merge)
+				: accumulator.with(element.print(), merge)
 		}
 	}
 

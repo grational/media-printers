@@ -13,6 +13,7 @@ class JsonObjectArrayUSpec extends Specification {
 	@Shared Jsonable second
 
 	def setupSpec() {
+		
 		first = Stub(Jsonable) {
 			print() >> {
 				new JsonMedia([:])
@@ -41,7 +42,27 @@ class JsonObjectArrayUSpec extends Specification {
 			jarray << second
 
 		expect:
-			jarray.print().toString() == /[{"first":"v1","second":"v2","third":"v3"},true,0,"one",[1,2,3],{"key":"value"}]/
+			jarray.print().toString() == /[{"first":"v1","second":"v2","third":"v3"},[true,0,"one",[1,2,3],{"key":"value"}]]/
+	}
+
+	def "Should omit the falsy elements when optional is set to true"() {
+		given:
+			Jsonable emptyArray = Stub(Jsonable) {
+				print() >> { new JsonMedia([]) }
+			}
+			Jsonable emptyObject = Stub(Jsonable) {
+				print() >> { new JsonMedia([:]) }
+			}
+
+		and:
+			Jsonable jarray = new JsonObjectArray()
+			jarray << first
+			jarray << emptyArray
+			jarray << second
+			jarray << emptyObject
+
+		expect:
+			jarray.print().toString() == /[{"first":"v1","second":"v2","third":"v3"},[true,0,"one",[1,2,3],{"key":"value"}]]/
 	}
 
 }
