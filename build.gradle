@@ -6,28 +6,22 @@
 
 // [plugins] this block must be the first
 plugins {
-	// support to api keyword
-	id 'java-library'
 	// support for groovy
 	id 'groovy'
+	// support to api keyword
+	id 'java-library'
 	// awesome git tag / gradle version integration
-	id 'pl.allegro.tech.build.axion-release' version '1.13.14'
+	id 'pl.allegro.tech.build.axion-release' version '1.18.18'
 	// to upload on a nexus server
 	id 'maven-publish'
 }
 
 // [general] configuration
 project.ext {
-	groovyVersion      = '3.0.22'
-	spockVersion       = '2.3-groovy-3.0'
-	slf4jVersion       = '2.0.7'
+	groovyVersion      = '4.0.26'
+	spockVersion       = '2.3-groovy-4.0'
+	slf4jVersion       = '2.0.17'
 	specSupportVersion = 'release-1.1.3'
-}
-
-scmVersion {
-	tag {
-		prefix = 'release-'
-	}
 }
 
 project.with {
@@ -39,7 +33,7 @@ project.with {
 
 // [crosscompile] source and target java version
 allprojects {
-	sourceCompatibility = 8
+	sourceCompatibility = JavaVersion.toVersion('21')
 	targetCompatibility = sourceCompatibility
 }
 
@@ -51,8 +45,8 @@ repositories {
 dependencies {
 	// Groovy language support
 	api (
-		"org.codehaus.groovy:groovy:$groovyVersion",
-		"org.codehaus.groovy:groovy-json:$groovyVersion"
+		"org.apache.groovy:groovy:$groovyVersion",
+		"org.apache.groovy:groovy-json:$groovyVersion"
 	)
 
 	// We use the awesome Spock testing and specification framework
