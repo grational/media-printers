@@ -60,7 +60,9 @@ class JsonMedia implements Media {
 	 * @throws UnsupportedOperationException
 	 */
 	Media withOptional(String name, def value) {
-		return ( value ) ?  this.with(name,value) : new JsonMedia(this.content)
+		return (value in [0, false] || value)
+			? this.with(name,value)
+			: new JsonMedia(this.content)
 	}
 
 	@Override
@@ -148,7 +150,9 @@ class JsonMedia implements Media {
 	 * @throws UnsupportedOperationException
 	 */
 	Media withOptional(def data, boolean merge = false) {
-		(data) ? this.listWith(data, merge) : new JsonMedia(this.content)
+		return (data in [0, false] || data)
+			? this.listWith(data, merge)
+			: new JsonMedia(this.content)
 	}
 
 	private Media listWith(def data, boolean merge) {

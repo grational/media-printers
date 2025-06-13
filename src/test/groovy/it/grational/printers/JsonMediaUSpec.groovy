@@ -213,14 +213,14 @@ class JsonMediaUSpec extends Specification {
 		 	 .withOptional('str')  // String  included
 		 	 .withOptional([1])    // List    included
 		 	 .withOptional([a: 1]) // Map     included
+		 	 .withOptional(false)  // false   included
+		 	 .withOptional(0)      // 0       included
 		 	 .withOptional(null)   // null    NOT included
-		 	 .withOptional(false)  // Boolean NOT included
-		 	 .withOptional(0)      // Number  NOT included
 		 	 .withOptional('')     // String  NOT included
 		 	 .withOptional([])     // List    NOT included
 		 	 .withOptional([:])    // Map     NOT included
 		then:
-			arrayMedia.json() == '[true,1,"str",[1],{"a":1}]'
+			arrayMedia.json() == '[true,1,"str",[1],{"a":1},false,0]'
 	}
 
 }
