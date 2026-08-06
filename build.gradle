@@ -29,6 +29,19 @@ project.ext {
 	specSupportVersion = 'release-1.1.3'
 }
 
+scmVersion {
+	repository {
+		customUsername.set(
+			providers.environmentVariable('MEDIA_PRINTERS_RELEASE_USERNAME')
+				.orElse(providers.gradleProperty('release.customUsername'))
+		)
+		customPassword.set(
+			providers.environmentVariable('MEDIA_PRINTERS_RELEASE_PASSWORD')
+				.orElse(providers.gradleProperty('release.customPassword'))
+		)
+	}
+}
+
 project.with {
 	//project.name is set in the settings.gradle with rootProject.name
 	group       'it.grational'
