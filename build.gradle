@@ -11,15 +11,20 @@ plugins {
 	// support to api keyword
 	id 'java-library'
 	// awesome git tag / gradle version integration
-	id 'pl.allegro.tech.build.axion-release' version '1.18.18'
+	id 'pl.allegro.tech.build.axion-release' version '1.21.1'
 	// to upload on a nexus server
 	id 'maven-publish'
 }
 
-// [general] configuration
+// [flavor] compatibility matrix
 project.ext {
-	groovyVersion      = '4.0.26'
-	spockVersion       = '2.3-groovy-4.0'
+	toolchainVersion   = 25
+	jvmVersion         = 17
+	groovy             = [major: 5, minor: 0, patch: 4]
+	groovyGroup        = groovy.major >= 4 ? 'apache' : 'codehaus'
+	groovyVersion      = groovy.values().join('.')
+	flavor             = "java-${jvmVersion}-groovy-${groovy.major}"
+	spockVersion       = "2.4-groovy-${groovy.major}.${groovy.minor}"
 	slf4jVersion       = '2.0.17'
 	specSupportVersion = 'release-1.1.3'
 }
@@ -31,10 +36,12 @@ project.with {
 	description 'Provide and object the functionality to print itself on a media (currently csv,json)'
 }
 
-// [crosscompile] source and target java version
-allprojects {
-	sourceCompatibility = JavaVersion.toVersion('21')
-	targetCompatibility = sourceCompatibility
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(project.toolchainVersion)
+	}
+	sourceCompatibility = JavaVersion.toVersion(project.jvmVersion)
+	targetCompatibility = JavaVersion.toVersion(project.jvmVersion)
 }
 
 repositories {
@@ -45,8 +52,8 @@ repositories {
 dependencies {
 	// Groovy language support
 	api (
-		"org.apache.groovy:groovy:$groovyVersion",
-		"org.apache.groovy:groovy-json:$groovyVersion"
+		"org.${groovyGroup}.groovy:groovy:$groovyVersion",
+		"org.${groovyGroup}.groovy:groovy-json:$groovyVersion"
 	)
 
 	// We use the awesome Spock testing and specification framework
@@ -54,6 +61,7 @@ dependencies {
 		"org.spockframework:spock-core:$spockVersion",
 		"com.github.grational:specification-support:$specSupportVersion"
 	)
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 check {

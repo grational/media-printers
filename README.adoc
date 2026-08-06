@@ -1,3 +1,35 @@
 = media-printers
 
 A 'gigawatt' powered project.
+
+== Compatibility
+
+Groovy is an exported runtime dependency. Select the artifact matching the
+Groovy major version used by the consuming application.
+
+[cols="1,1,1,1,3", options="header"]
+|===
+| Version
+| Branch
+| Java
+| Groovy
+| Use it when
+
+| `vX.Y.Z`
+| `master`
+| 17+
+| 5.x
+| The application uses the current Groovy line.
+
+| `vX.Y.Z-g4`
+| `groovy-4`
+| 17+
+| 4.x
+| The application depends on Groovy 4.
+
+| `vX.Y.Z-j8g3`
+| `java-8-groovy-3`
+| 8+
+| 3.x
+| The application must remain compatible with Java 8 and Groovy 3.
+|===
