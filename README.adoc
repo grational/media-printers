@@ -18,8 +18,14 @@ Groovy major version used by the consuming application.
 | `vX.Y.Z`
 | `master`
 | 17+
-| 5.x
+| 6.x
 | The application uses the current Groovy line.
+
+| `vX.Y.Z-g5`
+| `groovy-5`
+| 17+
+| 5.x
+| The application depends on Groovy 5.
 
 | `vX.Y.Z-g4`
 | `groovy-4`

@@ -2,16 +2,14 @@ package it.grational.composers
 
 import spock.lang.*
 import it.grational.printers.CsvMedia
-import it.grational.specification.*
 
 class CsvISpec extends Specification {
 
-	@Shared
-	TempFileFactory tff = new TempFileFactory()
+	@TempDir File directory
 
 	def "Should correctly compose a collection of Csv Medias into a file"() {
 		given: 'an output empty temporary csv file'
-			def outfile = tff.create()
+			def outfile = File.createTempFile('csv', '.tmp', directory)
 		and: 'a list of csv media'
 			def mediaList = (1..3).collect {
 				new CsvMedia (
@@ -43,7 +41,7 @@ class CsvISpec extends Specification {
 
 	def "Should be capable of handling an empty media list"() {
 		given:
-			def outfile = tff.create()
+			def outfile = File.createTempFile('csv', '.tmp', directory)
 		and:
 			def emptyMediaList = []
 
@@ -61,7 +59,7 @@ class CsvISpec extends Specification {
 
 	def "Should execute the action passed when there are no media to write"() {
 		given:
-			def outfile = tff.create()
+			def outfile = File.createTempFile('csv', '.tmp', directory)
 		and:
 			def emptyMediaList = []
 		and:
